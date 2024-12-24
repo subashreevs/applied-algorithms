@@ -1,0 +1,40 @@
+def find_path_to_target(pyramid, target):
+    # Recursive function to search paths from top to bottom
+    def explore_path(row, col, current_product, path):
+        # Check if we are at the last row
+        if row == len(pyramid) - 1:
+            # Check if multiplying the current position value reaches the target
+            if current_product * pyramid[row][col] == target:
+                return path  # Return the path string if target is reached
+            return None  # Return None to backtrack if target not reached
+
+        # Continue to the next row by going either left or right
+        # Explore left path
+        left_path = explore_path(row + 1, col, current_product * pyramid[row][col], path + 'L')
+        if left_path:
+            return left_path  # Return the path if target is found on the left
+
+        # Explore right path
+        right_path = explore_path(row + 1, col + 1, current_product * pyramid[row][col], path + 'R')
+        if right_path:
+            return right_path  # Return the path if target is found on the right
+
+        # Return None if no path meets the target
+        return None
+
+    # Start exploring from the top of the pyramid
+    return explore_path(0, 0, 1, '')
+
+# Sample input pyramid and target
+target = 720
+pyramid = [
+    [2],
+    [4, 3],
+    [3, 2, 6],
+    [2, 9, 5, 2],
+    [10, 5, 2, 15, 5]
+]
+
+# Find and print the path
+result = find_path_to_target(pyramid, target)
+print(result)  # Expected output: 'LRLL'
